@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:azure-service-bus-messaging="http://www.mulesoft.org/schema/mule/azure-service-bus-messaging" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/azure-service-bus-messaging http://www.mulesoft.org/schema/mule/azure-service-bus-messaging/current/mule-azure-service-bus-messaging.xsd">
+	<azure-service-bus-messaging:config name="Azure_Service_Bus_Messaging_Connector_Config" doc:name="Azure Service Bus Messaging Connector Config" doc:id="76dcf6e3-aecc-4737-8ce4-0a79ba9c3d3a" >
+		<azure-service-bus-messaging:sas-connection namespace="centralmom-test-compute-messaging.servicebus.windows.net/" sharedAccessKeyName="RootManageSharedAccessKey" sharedAccessKey="ya137RkXc9AUHesB9ievEL3rwdCrub5fylxsEKkAt0I=" />
+	</azure-service-bus-messaging:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4f9885f1-8cb5-4df2-84d3-66a9b3302289" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="testazureesbFlow" doc:id="e65abb90-1d9f-4cf3-bca2-d5f2781003d9" >
+		<http:listener doc:name="Listener" doc:id="5bf2c863-e315-43ce-abba-f039368eaa96" config-ref="HTTP_Listener_config" path="/azesb"/>
+		<set-payload value="Hello Test Message" doc:name="Set Payload" doc:id="2807dfd0-8ec2-4f9d-a035-8362dafd1bc8" />
+		<azure-service-bus-messaging:send destinationName="test.in" doc:name="Send" doc:id="945af787-0a7e-4223-a629-18688ec190b5" config-ref="Azure_Service_Bus_Messaging_Connector_Config">
+			<azure-service-bus-messaging:body ><![CDATA[payload]]></azure-service-bus-messaging:body>
+		</azure-service-bus-messaging:send>
+	</flow>
+</mule>
